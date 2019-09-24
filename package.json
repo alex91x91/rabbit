@@ -1,0 +1,19 @@
+{
+  "name": "rabbit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex91x91/rabbit.git"
+  },
+  "author": "https://github.com/alex91x91",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alex91x91/rabbit/issues"
+  },
+  "homepage": "https://github.com/alex91x91/rabbit#readme"
+}
