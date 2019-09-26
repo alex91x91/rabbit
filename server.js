@@ -3,27 +3,32 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const fs = require("fs");
-const amqplib = require("amqplib");
+const amqp = require("amqplib");
 
 const { PORT } = process.env;
 
-async function addToQueue(file) {
-  const q = "file";
+const q = "tasks";
 
-  const conn = await amqplib.connect(process.env.RABBIT);
-  const ch = await conn.createChannel();
-  await ch.assertQueue(q);
-  return ch.sendToQueue(q, Buffer.from(file, "utf8"));
-}
+amqp
+  .connect(process.env.RABBIT)
+  .then((err, conn) => {
+    return conn.createChannel();
+  })
+  .then(function(ch) {
+    return ch.assertQueue(q).then(function(ok) {
+      return ch.sendToQueue(q, Buffer.from("something to do"));
+    });
+  })
+  .catch(err => console.log(err));
 
 fs.watch("./entry", (event, fileName) => {
   console.log(`event type is: ${event} and ${fileName}`);
+
   const fileNameWithDate = `${new Date().getTime()}_`.concat(fileName);
 
   fs.copyFile(`./entry/${fileName}`, `./output/${fileNameWithDate}`, err => {
-    if (err) {
-      if (err) throw err;
-    }
+    if (err) throw err;
+
     console.log(`${fileName} was copied`);
   });
 });
