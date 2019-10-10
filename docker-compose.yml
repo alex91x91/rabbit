@@ -13,7 +13,7 @@ services:
 
   app2:
     container_name: app_rabbit_consumer
-    build: .
+    build: ./consumer
     volumes:
       - app-data-entry:/data/entry
       - app-data-output:/data/output

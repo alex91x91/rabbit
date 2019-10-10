@@ -5,7 +5,7 @@ const app = express();
 const fs = require("fs");
 const amqp = require("amqplib/callback_api");
 
-const { PORT } = process.env;
+const { PORT = 5001 } = process.env;
 
 setTimeout(() => {
   amqp.connect("amqp://rabbitmq", function(error0, connection) {
@@ -18,17 +18,28 @@ setTimeout(() => {
       }
 
       const queue = "hello";
-      const msg = "Hello Alex!";
 
       channel.assertQueue(queue, {
         durable: false
       });
-      channel.sendToQueue(queue, Buffer.from(msg));
 
-      console.log(" [x] Sent %s", msg);
+      console.log(
+        " [*] Waiting for messages in %s. To exit press CTRL+C",
+        queue
+      );
+
+      channel.consume(
+        queue,
+        function(msg) {
+          console.log(" [x] Received %s", msg.content.toString());
+        },
+        {
+          noAck: true
+        }
+      );
     });
   });
-}, 10000);
+}, 8000);
 
 // fs.watch("./data/entry", (event, fileName) => {
 //   console.log(`event type is: ${event} and ${fileName}`);
