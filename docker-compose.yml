@@ -1,0 +1,33 @@
+version: "3"
+services:
+  app:
+    container_name: app_rabbit_producer
+    build: .
+    volumes:
+      - app-data-entry:/data/entry
+      - app-data-output:/data/output
+    links:
+      - rabbitmq
+    depends_on:
+      - rabbitmq
+
+  app2:
+    container_name: app_rabbit_consumer
+    build: .
+    volumes:
+      - app-data-entry:/data/entry
+      - app-data-output:/data/output
+    links:
+      - rabbitmq
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    container_name: rabbit
+    image: "rabbitmq:management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+volumes:
+  app-data-entry:
+  app-data-output:
