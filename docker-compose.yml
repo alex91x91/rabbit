@@ -2,10 +2,10 @@ version: "3"
 services:
   app:
     container_name: app_rabbit_producer
-    build: .
+    build: ./producer
     volumes:
-      - app-data-entry:/entry
-      - app-data-output:/output
+      - app-data-entry:/data/entry
+      - app-data-output:/data/output
     environment:
       - MESSAGE_QUEUE=amqp://rabbitmq
     links:
@@ -18,8 +18,8 @@ services:
     container_name: app_rabbit_consumer
     build: ./consumer
     volumes:
-      - app-data-entry:/entry
-      - app-data-output:/output
+      - app-data-entry:/data/entry
+      - app-data-output:/data/output
     environment:
       - MESSAGE_QUEUE=amqp://rabbitmq
     links:
