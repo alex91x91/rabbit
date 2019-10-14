@@ -4,8 +4,10 @@ services:
     container_name: app_rabbit_producer
     build: .
     volumes:
-      - app-data-entry:/data/entry
-      - app-data-output:/data/output
+      - app-data-entry:/entry
+      - app-data-output:/output
+    environment:
+      - MESSAGE_QUEUE=amqp://rabbitmq
     links:
       - rabbitmq
     depends_on:
@@ -15,12 +17,15 @@ services:
     container_name: app_rabbit_consumer
     build: ./consumer
     volumes:
-      - app-data-entry:/data/entry
-      - app-data-output:/data/output
+      - app-data-entry:/entry
+      - app-data-output:/output
+    environment:
+      - MESSAGE_QUEUE=amqp://rabbitmq
     links:
       - rabbitmq
     depends_on:
       - rabbitmq
+      - app
 
   rabbitmq:
     container_name: rabbit

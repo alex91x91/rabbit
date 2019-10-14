@@ -8,7 +8,7 @@ const amqp = require("amqplib/callback_api");
 const { PORT } = process.env;
 
 setTimeout(() => {
-  amqp.connect("amqp://rabbitmq", function(error0, connection) {
+  amqp.connect(process.env.MESSAGE_QUEUE, function(error0, connection) {
     if (error0) {
       throw error0;
     }
@@ -30,21 +30,17 @@ setTimeout(() => {
   });
 }, 10000);
 
-// fs.watch("./data/entry", (event, fileName) => {
-//   console.log(`event type is: ${event} and ${fileName}`);
+fs.watch("./entry", (event, fileName) => {
+  console.log(`event type is: ${event} and ${fileName}`);
 
-//   const fileNameWithDate = `${new Date().getTime()}_`.concat(fileName);
+  const fileNameWithDate = `${new Date().getTime()}_`.concat(fileName);
 
-//   fs.copyFile(
-//     `./data/entry/${fileName}`,
-//     `./data/output/${fileNameWithDate}`,
-//     err => {
-//       if (err) throw err;
+  fs.copyFile(`./entry/${fileName}`, `./output/${fileNameWithDate}`, err => {
+    if (err) throw err;
 
-//       console.log(`${fileName} was copied`);
-//     }
-//   );
-// });
+    console.log(`${fileName} was copied`);
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}...`);

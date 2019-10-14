@@ -8,7 +8,7 @@ const amqp = require("amqplib/callback_api");
 const { PORT = 5001 } = process.env;
 
 setTimeout(() => {
-  amqp.connect("amqp://rabbitmq", function(error0, connection) {
+  amqp.connect(process.env.MESSAGE_QUEUE, function(error0, connection) {
     if (error0) {
       throw error0;
     }
