@@ -12,6 +12,7 @@ services:
       - rabbitmq
     depends_on:
       - rabbitmq
+      - app2
 
   app2:
     container_name: app_rabbit_consumer
@@ -25,7 +26,6 @@ services:
       - rabbitmq
     depends_on:
       - rabbitmq
-      - app
 
   rabbitmq:
     container_name: rabbit
