@@ -4,8 +4,7 @@ services:
     container_name: app_rabbit_producer
     build: ./producer
     volumes:
-      - app-data-entry:/data/entry
-      - app-data-output:/data/output
+      - ./data:/data
     environment:
       - MESSAGE_QUEUE=amqp://rabbitmq
     links:
@@ -18,8 +17,7 @@ services:
     container_name: app_rabbit_consumer
     build: ./consumer
     volumes:
-      - app-data-entry:/data/entry
-      - app-data-output:/data/output
+      - ./data:/data
     environment:
       - MESSAGE_QUEUE=amqp://rabbitmq
     links:
@@ -34,5 +32,4 @@ services:
       - "5672:5672"
       - "15672:15672"
 volumes:
-  app-data-entry:
-  app-data-output:
+  data-vol:
